@@ -3,302 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linbox | Matris İşlemcisi</title>
-    <!-- Google Fonts'tan Inter yazı tipini ekliyoruz -->
+    <title>Linbox | Analiz Platformu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --background: #F4F7FC;
+            --background: #F5F5F7;
             --surface: #FFFFFF;
-            --primary-accent: #4A90E2;
-            --primary-accent-light: #EAF2FF;
-            --secondary-accent: #81C7F5; /* Gradient için ikinci mavi tonu */
-            --text-primary: #2D3748;
-            --text-secondary: #718096;
-            --border-color: #E2E8F0;
-            --shadow-color: rgba(74, 144, 226, 0.1);
+            --primary-accent: #007AFF;
+            --primary-accent-light: rgba(0, 122, 255, 0.1);
+            --secondary-accent: #5856D6;
+            --text-primary: #1D1D1F;
+            --text-secondary: #6E6E73;
+            --border-color: #D2D2D7;
+            --shadow-color: rgba(0, 0, 0, 0.05);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: var(--background);
             color: var(--text-primary); 
             min-height: 100vh; 
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            overflow: hidden;
         }
-
-        .container { 
-            max-width: 1200px; 
-            width: 100%; 
-            padding: 0 20px;
-            margin: 0 auto;
-        }
-        header {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 20px;
-        }
-        .logo-section { display: flex; align-items: center; gap: 15px; }
-        .logo { 
-            width: 45px; height: 45px; 
-            background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
-            border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            color: white; font-size: 24px; font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--shadow-color);
-        }
-        .logo:hover { transform: scale(1.1) rotate(-15deg); }
         
-        .site-title { 
-            font-size: 28px; 
-            font-weight: 700; 
-            background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: all 0.3s ease;
-        }
-        .site-title:hover {
-            text-shadow: 0 0 15px var(--shadow-color);
-        }
-
-        .menu { display: flex; list-style: none; gap: 10px; }
-        .menu a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 16px; padding: 8px 16px; border-radius: 99px; transition: all 0.2s; }
-        .menu a:hover, .menu a.active { color: var(--primary-accent); background: var(--primary-accent-light); }
+        .app-layout { display: flex; height: 100vh; }
+        #main-nav { width: 240px; background-color: var(--surface); border-right: 1px solid var(--border-color); padding: 24px; display: flex; flex-direction: column; transition: width 0.3s ease; flex-shrink: 0; }
+        .logo-section { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+        .logo { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .logo:hover { transform: rotate(90deg); }
+        .site-title { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+        .site-title .x-mark { display: inline-block; transform: scaleX(-1); background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: italic; }
+        .nav-menu { list-style: none; }
+        .nav-menu li { margin-bottom: 4px; }
+        .nav-button { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: 8px; border: none; background-color: transparent; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; text-align: left; transition: all 0.2s; }
+        .nav-button:hover { background-color: var(--primary-accent-light); color: var(--primary-accent); }
+        .nav-button.active { background-color: var(--primary-accent); color: white; font-weight: 700; }
         
-        .main-content { margin-top: 120px; padding: 40px 0; width: 100%; display: flex; justify-content: center; }
-        
-        .hero-section { 
-            background: var(--surface);
-            padding: 40px; 
-            text-align: center; 
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            max-width: 900px; width: 100%; 
-            box-shadow: 0 10px 30px var(--shadow-color);
-        }
+        #content-area { flex-grow: 1; padding: 40px; overflow-y: auto; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-title { color: var(--text-primary); font-size: 36px; font-weight: 700; margin-bottom: 8px; letter-spacing: -1px; }
-        .hero-subtitle { color: var(--text-secondary); font-size: 18px; }
+        .content-card { background: var(--surface); padding: 40px; text-align: center; border: 1px solid var(--border-color); border-radius: 24px; max-width: 900px; width: 100%; margin: 0 auto; box-shadow: 0 10px 30px var(--shadow-color); }
+        .content-title { color: var(--text-primary); font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .content-subtitle { color: var(--text-secondary); font-size: 15px; }
         
         .controls-wrapper { display: flex; gap: 20px; justify-content: center; margin: 30px 0; flex-wrap: wrap; }
-        .control-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); text-align: left; }
-        select, input { 
-            padding: 12px; 
-            border: 1px solid var(--border-color); 
-            background: var(--background); 
-            color: var(--text-primary); 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            font-size: 16px;
-            border-radius: 12px;
-            transition: all 0.2s; 
-        }
-        select:focus, input:focus {
-            outline: none;
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 0 3px var(--primary-accent-light);
-        }
-        button.cta-button { 
-            padding: 12px 30px;
-            background: var(--primary-accent); 
-            color: white; 
-            cursor: pointer; 
-            border: none;
-            font-weight: 700;
-            font-size: 16px;
-            border-radius: 99px;
-            transition: all 0.2s;
-        }
-        button.cta-button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3); }
+        .control-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--text-secondary); text-align: left; }
+        select, input, textarea { padding: 12px; border: 1px solid var(--border-color); background: var(--background); color: var(--text-primary); margin: 0; font-family: 'Inter', sans-serif; font-size: 15px; border-radius: 12px; transition: all 0.2s; width: 100%; }
+        select:focus, input:focus, textarea:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 0 3px var(--primary-accent-light); }
         
-        #matrix-section { display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+        .button-group { display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+        button.cta-button { padding: 12px 30px; color: white; cursor: pointer; border: none; font-weight: 500; font-size: 15px; border-radius: 99px; transition: all 0.2s; }
+        button.cta-button:hover { transform: translateY(-2px); }
+        
+        button.process-button { background: var(--primary-accent); }
+        button.process-button:hover { box-shadow: 0 5px 15px rgba(0, 122, 255, 0.2); }
+        
+        button.clear-button { background: var(--text-secondary); }
+        button.clear-button:hover { background: var(--text-primary); }
+
+        #matrix-section { display: flex; justify-content: center; align-items: center; gap: 20px; margin: 20px 0; width: 100%; transition: transform 0.4s ease; transform-origin: center center; }
         .matrix-operator { font-size: 28px; color: var(--text-secondary); }
-        .matrix { display: grid; gap: 10px; padding: 20px; background: var(--background); border: 1px solid var(--border-color); border-radius: 16px; }
-        .matrix input { 
-            width: 60px; height: 60px; 
-            text-align: center; font-size: 18px; 
-            -moz-appearance: textfield; 
-            color: var(--text-primary); 
-            background-color: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-        }
+        .matrix { display: grid; gap: 8px; padding: 15px; background: var(--background); border: 1px solid var(--border-color); border-radius: 16px; transition: all 0.3s ease; }
+        .matrix input { text-align: center; -moz-appearance: textfield; color: var(--text-primary); background-color: var(--surface); border: 1px solid var(--border-color); border-radius: 12px; transition: all 0.3s ease; }
+        .matrix.size-normal input { width: 55px; height: 55px; font-size: 16px; }
+        .matrix.size-small input { width: 42px; height: 42px; font-size: 13px; }
         .matrix input::-webkit-outer-spin-button, .matrix input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
-        #result { 
-            margin-top: 30px; padding: 20px; 
-            background: var(--background); 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            min-height: 120px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            transition: all 0.3s ease;
-        }
-
-        /* Sonuç animasyonları için stiller */
-        @keyframes scale-in {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes fade-in-stagger {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-title {
-            width: 100%;
-            text-align: center;
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
-
-        .scalar-result-box {
-            animation: scale-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-            text-align: center;
-        }
-        .scalar-value {
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--primary-accent);
-        }
-
-        .matrix-result-grid {
-            display: grid;
-            gap: 10px;
-            animation: scale-in 0.5s ease both;
-        }
-        .result-cell {
-            width: 60px; height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 500;
-            opacity: 0;
-            animation: fade-in-stagger 0.5s ease forwards;
-        }
-
-        .eigenvalue-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            animation: scale-in 0.5s ease both;
-        }
-        .eigenvalue-tag {
-            background-color: var(--primary-accent-light);
-            color: var(--primary-accent);
-            padding: 8px 16px;
-            border-radius: 99px;
-            font-size: 16px;
-            font-weight: 500;
-            opacity: 0;
-            animation: fade-in-stagger 0.5s ease forwards;
-        }
+        #result, #derivative-result, #integral-result { margin-top: 30px; padding: 20px; background: var(--background); border-radius: 16px; border: 1px solid var(--border-color); min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.3s ease; gap: 15px; }
         
-        @media (max-width: 768px) { nav, .menu { flex-direction: column; gap: 15px; } }
+        @keyframes scale-in { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fade-in-stagger { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .result-title { width: 100%; text-align: center; font-size: 14px; color: var(--text-secondary); margin-bottom: 15px; }
+        .scalar-result-box { animation: scale-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; text-align: center; }
+        .scalar-value { font-size: 42px; font-weight: 700; color: var(--primary-accent); }
+        .matrix-result-grid { display: grid; gap: 8px; animation: scale-in 0.5s ease both; }
+        .result-cell { display: flex; justify-content: center; align-items: center; background-color: var(--surface); border: 1px solid var(--border-color); border-radius: 12px; font-weight: 500; opacity: 0; animation: fade-in-stagger 0.5s ease forwards; }
+        .result-cell.size-normal { width: 55px; height: 55px; font-size: 16px; }
+        .result-cell.size-small { width: 42px; height: 42px; font-size: 13px; }
+        .eigenvalue-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; animation: scale-in 0.5s ease both; }
+        .eigenvalue-tag { background-color: var(--primary-accent-light); color: var(--primary-accent); padding: 8px 16px; border-radius: 99px; font-size: 14px; font-weight: 500; opacity: 0; animation: fade-in-stagger 0.5s ease forwards; }
+        
+        @media (max-width: 1024px) {
+            .app-layout { flex-direction: column; }
+            #main-nav { width: 100%; height: auto; flex-direction: row; justify-content: space-between; align-items: center; }
+            .nav-menu { display: flex; flex-direction: row; }
+            .logo-section { margin-bottom: 0; }
+            #content-area { padding: 20px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav>
+    <div class="app-layout">
+        <aside id="main-nav">
+            <div>
                 <div class="logo-section">
-                    <div class="logo">∑</div>
-                    <h1 class="site-title">Linbox</h1>
+                    <div class="logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="8" width="10" height="10" rx="2" fill="#007AFF"/>
+                            <rect x="22" y="8" width="10" height="10" rx="2" fill="rgba(0, 122, 255, 0.5)"/>
+                            <rect x="8" y="22" width="10" height="10" rx="2" fill="rgba(0, 122, 255, 0.5)"/>
+                            <rect x="22" y="22" width="10" height="10" rx="2" fill="#007AFF"/>
+                        </svg>
+                    </div>
+                    <h1 class="site-title">Linbo<span class="x-mark">x</span></h1>
                 </div>
-                <ul class="menu">
-                    <li><a href="#" class="active">Analiz</a></li>
-                    <li><a href="#">Kavramlar</a></li>
-                    <li><a href="#">Tarihçe</a></li>
-                    <li><a href="#">Görselleştirme</a></li>
-                    <li><a href="#">Paradokslar</a></li>
+                <ul class="nav-menu">
+                    <li><button class="nav-button active" data-target="page-matrix">Matris İşlemcisi</button></li>
+                    <li><button class="nav-button" data-target="page-derivative">Türev Analizi</button></li>
+                    <li><button class="nav-button" data-target="page-integral">İntegral Hesaplayıcı</button></li>
                 </ul>
-            </nav>
-        </header>
+            </div>
+        </aside>
 
-        <main class="main-content">
-            <section class="hero-section">
-                <h2 class="hero-title">MATRİS İŞLEMCİSİ</h2>
-                <p class="hero-subtitle">Doğrudan. Güçlü. Analiz.</p>
-                
-                <div class="controls-wrapper">
-                    <div class="control-group">
-                        <label for="matrixSize">Boyut:</label>
-                        <select id="matrixSize" onchange="updateUI()"><option value="2x2">2x2</option><option value="3x3">3x3</option><option value="4x4">4x4</option></select>
+        <main id="content-area">
+            <!-- Sayfa 1: Matris İşlemcisi -->
+            <div id="page-matrix" class="page active">
+                <section class="content-card">
+                    <h2 class="content-title">MATRİS İŞLEMCİSİ</h2>
+                    <p class="content-subtitle">Doğrudan. Güçlü. Analiz.</p>
+                    <div class="controls-wrapper">
+                        <div class="control-group">
+                            <label for="matrixSize">Boyut:</label>
+                            <select id="matrixSize" onchange="updateUI()"><option value="2x2">2x2</option><option value="3x3">3x3</option><option value="4x4">4x4</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="matrixCount">Matris Sayısı:</label>
+                            <select id="matrixCount" onchange="updateUI()"><option value="1">1</option><option value="2">2</option></select>
+                        </div>
+                        <div class="control-group">
+                            <label for="operation">Operasyon:</label>
+                            <select id="operation"></select>
+                        </div>
                     </div>
-                    <div class="control-group">
-                        <label for="matrixCount">Matris Sayısı:</label>
-                        <select id="matrixCount" onchange="updateUI()"><option value="1">1</option><option value="2">2</option></select>
+                    <div id="matrix-section">
+                        <div id="matrixContainerA"></div>
+                        <div id="operator-symbol" class="matrix-operator" style="display: none;"></div>
+                        <div id="matrixContainerB" style="display: none;"></div>
                     </div>
-                    <div class="control-group">
-                        <label for="operation">Operasyon:</label>
-                        <select id="operation"></select>
+                    <div class="button-group">
+                        <button class="cta-button process-button" onclick="performMatrixOperation()">İŞLE</button>
+                        <button class="cta-button clear-button" onclick="clearMatrixInputs()">Temizle</button>
                     </div>
-                </div>
-                
-                <div id="matrix-section">
-                    <div id="matrixContainerA"></div>
-                    <div id="operator-symbol" class="matrix-operator" style="display: none;"></div>
-                    <div id="matrixContainerB" style="display: none;"></div>
-                </div>
-                
-                <button class="cta-button" onclick="performOperation()" style="margin-top: 20px;">İŞLE</button>
-                
-                <div id="result">...</div>
-            </section>
+                    <div id="result">Sonuç burada görüntülenecek...</div>
+                </section>
+            </div>
+
+            <!-- Sayfa 2: Türev Analizi -->
+            <div id="page-derivative" class="page">
+                <section class="content-card">
+                    <h2 class="content-title">TÜREV ANALİZİ</h2>
+                    <p class="content-subtitle">Bir fonksiyonun anlık değişim oranını keşfedin.</p>
+                    <div class="controls-wrapper">
+                        <div class="control-group" style="width: 100%;">
+                            <label for="functionInput">Fonksiyon f(x) =</label>
+                            <input type="text" id="functionInput" placeholder="Örn: x**3 + 2*x - 5">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="cta-button process-button" onclick="performDerivative()">Türev Al</button>
+                        <button class="cta-button clear-button" onclick="clearDerivativeInputs()">Temizle</button>
+                    </div>
+                    <div id="derivative-result" style="margin-top: 30px;">Sonuç burada görüntülenecek...</div>
+                </section>
+            </div>
+
+            <!-- Sayfa 3: İntegral Hesaplayıcı -->
+            <div id="page-integral" class="page">
+                <section class="content-card">
+                    <h2 class="content-title">İNTEGRAL HESAPLAYICI</h2>
+                    <p class="content-subtitle">Bir eğrinin altındaki alanı bulun.</p>
+                    <div class="controls-wrapper">
+                         <div class="control-group" style="width: 100%;">
+                            <label for="integralFunctionInput">Fonksiyon f(x) =</label>
+                            <input type="text" id="integralFunctionInput" placeholder="Örn: 3*x**2">
+                        </div>
+                        <div class="control-group">
+                            <label for="lowerBound">Alt Sınır (a):</label>
+                            <input type="text" id="lowerBound" value="0">
+                        </div>
+                         <div class="control-group">
+                            <label for="upperBound">Üst Sınır (b):</label>
+                            <input type="text" id="upperBound" value="1">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="cta-button process-button" onclick="performIntegral()">İntegral Hesapla</button>
+                        <button class="cta-button clear-button" onclick="clearIntegralInputs()">Temizle</button>
+                    </div>
+                    <div id="integral-result" style="margin-top: 30px;">Sonuç burada görüntülenecek...</div>
+                </section>
+            </div>
         </main>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => { updateUI(); });
-
+        // --- SAYFA NAVİGASYONU ---
+        function setupNavigation() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const pages = document.querySelectorAll('.page');
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    button.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        }
+        
+        // --- MATRİS İŞLEMCİSİ İÇİN FONKSİYONLAR ---
         function updateUI() {
             const matrixCount = document.getElementById('matrixCount').value;
             const sizeSelect = document.getElementById('matrixSize').value;
             const [rows, cols] = sizeSelect.split('x').map(Number);
-            createMatrix(rows, cols, 'matrixContainerA');
+            const sizeClass = (rows > 3 || cols > 3) ? 'size-small' : 'size-normal';
+            createMatrix(rows, cols, 'matrixContainerA', sizeClass);
             updateOperationOptions(matrixCount);
             const matrixB_container = document.getElementById('matrixContainerB');
             const operatorSymbol = document.getElementById('operator-symbol');
             if (matrixCount === '2') {
                 matrixB_container.style.display = 'block';
                 operatorSymbol.style.display = 'block';
-                createMatrix(rows, cols, 'matrixContainerB');
+                createMatrix(rows, cols, 'matrixContainerB', sizeClass);
             } else {
                 matrixB_container.style.display = 'none';
                 operatorSymbol.style.display = 'none';
@@ -327,12 +259,12 @@
             operationSelect.onchange();
         }
 
-        function createMatrix(rows, cols, containerId) {
+        function createMatrix(rows, cols, containerId, sizeClass) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             const matrix = document.createElement('div');
-            matrix.className = 'matrix';
-            matrix.style.gridTemplateColumns = `repeat(${cols}, 60px)`;
+            matrix.className = `matrix ${sizeClass}`;
+            matrix.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             for (let i = 0; i < rows * cols; i++) {
                 const input = document.createElement('input');
                 input.type = 'number';
@@ -343,7 +275,7 @@
             }
             container.appendChild(matrix);
         }
-
+        
         function readMatrixData(containerId, size) {
             const inputs = document.querySelectorAll(`#${containerId} input`);
             const matrixData = [];
@@ -361,82 +293,94 @@
         }
 
         // --- Sonuçları görselleştiren fonksiyonlar ---
-        function renderScalar(title, value) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `<div class="scalar-result-box"><div class="result-title">${title}</div><div class="scalar-value">${value}</div></div>`;
-        }
-
-        function renderMatrix(title, matrixArray) {
-            const resultDiv = document.getElementById('result');
-            // DÜZELTME: Gelen verinin geçerli bir matris olup olmadığını kontrol et
-            if (!Array.isArray(matrixArray) || matrixArray.length === 0 || !Array.isArray(matrixArray[0])) {
-                console.error("renderMatrix: Geçersiz veri formatı alındı.", matrixArray);
-                resultDiv.textContent = `HATA: Sunucudan geçersiz matris formatı alındı.`;
-                return;
-            }
+        function renderScalar(resultDiv, title, value) { resultDiv.innerHTML = `<div class="scalar-result-box"><div class="result-title">${title}</div><div class="scalar-value">${value}</div></div>`; }
+        function renderMatrix(resultDiv, title, matrixArray) {
+            if (!Array.isArray(matrixArray) || matrixArray.length === 0 || !Array.isArray(matrixArray[0])) { resultDiv.textContent = `HATA: Sunucudan geçersiz matris formatı alındı.`; return; }
+            const sizeClass = (matrixArray.length > 3 || matrixArray[0].length > 3) ? 'size-small' : 'size-normal';
             const cols = matrixArray[0].length;
             let cellsHTML = '';
-            matrixArray.flat().forEach((cell, index) => {
-                cellsHTML += `<div class="result-cell" style="animation-delay: ${index * 0.05}s">${parseFloat(cell).toFixed(3)}</div>`;
-            });
-            resultDiv.innerHTML = `<div><div class="result-title">${title}</div><div class="matrix-result-grid" style="grid-template-columns: repeat(${cols}, 60px);">${cellsHTML}</div></div>`;
+            matrixArray.flat().forEach((cell, index) => { cellsHTML += `<div class="result-cell ${sizeClass}" style="animation-delay: ${index * 0.05}s">${parseFloat(cell).toFixed(3)}</div>`; });
+            resultDiv.innerHTML = `<div><div class="result-title">${title}</div><div class="matrix-result-grid" style="grid-template-columns: repeat(${cols}, auto);">${cellsHTML}</div></div>`;
         }
-
-        function renderEigenvalues(title, eigenvalues) {
-            const resultDiv = document.getElementById('result');
-            // DÜZELTME: Gelen verinin geçerli bir dizi olup olmadığını kontrol et
-            if (!Array.isArray(eigenvalues)) {
-                console.error("renderEigenvalues: Geçersiz veri formatı alındı.", eigenvalues);
-                resultDiv.textContent = `HATA: Sunucudan geçersiz özdeğer formatı alındı.`;
-                return;
-            }
+        function renderEigenvalues(resultDiv, title, eigenvalues) {
+            if (!Array.isArray(eigenvalues)) { resultDiv.textContent = `HATA: Sunucudan geçersiz özdeğer formatı alındı.`; return; }
             let tagsHTML = '';
-            eigenvalues.forEach((val, index) => {
-                tagsHTML += `<div class="eigenvalue-tag" style="animation-delay: ${index * 0.1}s">${parseFloat(val).toFixed(4)}</div>`;
-            });
+            eigenvalues.forEach((val, index) => { tagsHTML += `<div class="eigenvalue-tag" style="animation-delay: ${index * 0.1}s">${parseFloat(val).toFixed(4)}</div>`; });
             resultDiv.innerHTML = `<div><div class="result-title">${title}</div><div class="eigenvalue-container">${tagsHTML}</div></div>`;
         }
+        function renderCalculus(resultDiv, title, result) {
+            resultDiv.innerHTML = `<div class="scalar-result-box"><div class="result-title">${title}</div><div class="scalar-value" style="font-size: 24px; font-family: 'Menlo', monospace;">${result}</div></div>`;
+        }
 
-        async function performOperation() {
+        // --- Temizleme Fonksiyonları ---
+        function clearMatrixInputs() {
+            document.querySelectorAll('#matrixContainerA input, #matrixContainerB input').forEach(input => { input.value = ''; });
+            document.getElementById('result').innerHTML = 'Sonuç burada görüntülenecek...';
+        }
+        function clearDerivativeInputs() {
+            document.getElementById('functionInput').value = '';
+            document.getElementById('derivative-result').innerHTML = 'Sonuç burada görüntülenecek...';
+        }
+        function clearIntegralInputs() {
+            document.getElementById('integralFunctionInput').value = '';
+            document.getElementById('lowerBound').value = '0';
+            document.getElementById('upperBound').value = '1';
+            document.getElementById('integral-result').innerHTML = 'Sonuç burada görüntülenecek...';
+        }
+
+        // --- Ana Hesaplama Fonksiyonları ---
+        async function performMatrixOperation() {
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '...';
+            resultDiv.innerHTML = 'İşleniyor...';
             const operation = document.getElementById('operation').value;
             const matrixCount = document.getElementById('matrixCount').value;
             const sizeSelect = document.getElementById('matrixSize').value;
             const [rows, cols] = sizeSelect.split('x').map(Number);
-            let payload = { 
-                operation: operation,
-                matrix: readMatrixData('matrixContainerA', { rows, cols })
-            };
-            if (matrixCount === '2') {
-                payload.matrixB = readMatrixData('matrixContainerB', { rows, cols });
-            }
+            let payload = { operation: operation, matrix: readMatrixData('matrixContainerA', { rows, cols }) };
+            if (matrixCount === '2') { payload.matrixB = readMatrixData('matrixContainerB', { rows, cols }); }
             try {
-                const response = await fetch('/calculate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                });
+                const response = await fetch('/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 const data = await response.json();
                 if (response.ok) {
-                    // DÜZELTME: Gelen verinin türüne göre doğru görselleştirme fonksiyonunu çağır
-                    if (data.type === 'scalar') {
-                        renderScalar(data.title, data.data);
-                    } else if (data.type === 'matrix') {
-                        renderMatrix(data.title, data.data);
-                    } else if (data.type === 'eigenvalue') {
-                        renderEigenvalues(data.title, data.data);
-                    } else {
-                        resultDiv.textContent = `HATA: Sunucudan beklenmedik format alındı.`;
-                    }
-                } else {
-                    resultDiv.textContent = `HATA: ${data.error || 'Bilinmeyen bir sunucu hatası oluştu.'}`;
-                }
-            } catch (error) {
-                console.error('Sunucu ile iletişim hatası:', error);
-                resultDiv.textContent = 'HATA: Sunucuya bağlanılamadı.';
-            }
+                    if (data.type === 'scalar') renderScalar(resultDiv, data.title, data.data);
+                    else if (data.type === 'matrix') renderMatrix(resultDiv, data.title, data.data);
+                    else if (data.type === 'eigenvalue') renderEigenvalues(resultDiv, data.title, data.data);
+                    else resultDiv.textContent = `HATA: Sunucudan beklenmedik format alındı.`;
+                } else { resultDiv.textContent = `HATA: ${data.error || 'Bilinmeyen bir sunucu hatası oluştu.'}`; }
+            } catch (error) { console.error('Sunucu ile iletişim hatası:', error); resultDiv.textContent = 'HATA: Sunucuya bağlanılamadı.'; }
         }
+
+        async function performDerivative() {
+            const resultDiv = document.getElementById('derivative-result');
+            resultDiv.innerHTML = 'İşleniyor...';
+            const functionStr = document.getElementById('functionInput').value;
+            const payload = { operation: 'derivative', function: functionStr };
+            try {
+                const response = await fetch('/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await response.json();
+                if (response.ok) { renderCalculus(resultDiv, data.title, data.data); } 
+                else { resultDiv.textContent = `HATA: ${data.error}`; }
+            } catch (error) { resultDiv.textContent = 'HATA: Sunucuya bağlanılamadı.'; }
+        }
+
+        async function performIntegral() {
+            const resultDiv = document.getElementById('integral-result');
+            resultDiv.innerHTML = 'İşleniyor...';
+            const functionStr = document.getElementById('integralFunctionInput').value;
+            const payload = { operation: 'integral', function: functionStr, lower_bound: document.getElementById('lowerBound').value, upper_bound: document.getElementById('upperBound').value };
+            try {
+                const response = await fetch('/calculate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const data = await response.json();
+                if (response.ok) { renderCalculus(resultDiv, data.title, data.data); } 
+                else { resultDiv.textContent = `HATA: ${data.error}`; }
+            } catch (error) { resultDiv.textContent = 'HATA: Sunucuya bağlanılamadı.'; }
+        }
+
+        // Sayfa yüklendiğinde tüm fonksiyonları başlat
+        document.addEventListener('DOMContentLoaded', () => { 
+            setupNavigation();
+            updateUI(); 
+        });
     </script>
 </body>
 </html>
