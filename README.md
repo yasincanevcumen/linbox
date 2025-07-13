@@ -29,7 +29,7 @@ Linbox, kullanıcıların temel ve ileri düzey matematik operasyonlarını ger�
     * **SymPy:** Sembolik matematik (türev, integral) işlemleri için.
 
 * **Frontend:**
-    * **HTML5 & CSS3:** "Apple tarzı" minimalist estetiği yansıtan, modern ve sade arayüz tasarımı.
+    * **HTML5 & CSS3:** Minimalist estetiği yansıtan, modern ve sade arayüz tasarımı.
     * **JavaScript (ES6):** Arayüz dinamizmi, modüler sayfa yönetimi ve `Fetch API` aracılığıyla sunucu ile asenkron iletişim.
 
 ---
