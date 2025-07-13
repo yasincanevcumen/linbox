@@ -1,0 +1,4 @@
+##Bu dosya, projenin çalışması için gereken Python kütüphanelerini listeler. 'pip install -r requirements.txt' komutu ile tümünü tek seferde kurabilirsiniz.##
+Flask
+numpy
+Flask-Cors
