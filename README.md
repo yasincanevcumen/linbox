@@ -1,9 +1,6 @@
 # Linbox | Modern Analiz Platformu
 
 Linbox, kullanıcıların temel ve ileri düzey matris operasyonlarını gerçekleştirmesini sağlayan, modern ve interaktif bir web tabanlı analiz platformudur. Bu proje, Python'un güçlü hesaplama yeteneklerini, Flask ile oluşturulmuş bir web sunucusu üzerinden, dinamik ve kullanıcı dostu bir HTML/CSS/JavaScript arayüzüne sunar.
-
-![Linbox Arayüzü](https://i.imgur.com/your-screenshot-url.png) <!-- Not: Buraya projenizin bir ekran görüntüsü URL'sini ekleyebilirsiniz. -->
-
 ---
 
 ### ✨ **Platform Özellikleri**
